@@ -16,9 +16,9 @@
 #include <signal.h>
 #include <pthread.h>
 #include <linux/in.h>
-#include <iostream>
 
-using namespace std;
+
+
 #define PORT "3490"  // the port users will be connecting to
 
 #define BACKLOG 10   // how many pending connections queue will hold
@@ -48,22 +48,21 @@ void *get_in_addr(struct sockaddr *sa)
 
 
 void *send_function(void *ptr){
-         int sockfd = *((int *)ptr);   
-         cout<<"send_function"<<endl;
+    
+        // int sockfd= malloc(sizeof(((int*)ptr)));   
+        int sockfd = *((int*)ptr);  
         if(send(sockfd, "Hello, world!", 13, 0) == -1){
+                printf("im here\n");
                 perror("send");
                 exit(1);
         }
-        else{
-            cout<<"send success"<<endl;
-        }
-       
+        //close(sockfd) ;     
 }
 
 
 int main(void)
 {
-    pthread_t thread;
+   
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
@@ -140,17 +139,12 @@ int main(void)
             get_in_addr((struct sockaddr *)&their_addr),
             s, sizeof s);
         printf("server: got connection from %s\n", s);
-        //send_function(&new_fd);
-       int g= pthread_create(&thread, NULL,send_function, (void *)new_fd);
-       pthread_detach(thread);
-        if(g==0){
-            cout<<"pthread_create error"<<endl;
-        }
-        else{
-            cout<<"pthread_create success"<<endl;
-        }
 
-        close(new_fd);  // parent doesn't need this
+        pthread_t thread;
+       pthread_create(&thread, NULL,send_function, (void *)&new_fd);
+
+
+        // close(new_fd);  // parent doesn't need this
     }
 
     return 0;
