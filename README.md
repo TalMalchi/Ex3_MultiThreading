@@ -16,6 +16,12 @@ In this project there are two classes:
 
 * Client Class - This class represent a client which connect to our running server
                  using the "127.0.0.1" IP and to print the message he got from the server. 
-                 
+
+
+## How to run the project?
+Open terminal and run the command "make all". In this way we create two exe files to run.  
+We will open another terminal, and simply type in the first terminal " ./Server " and in the other " ./Client 127.0.0.1"  
+
+![image](https://user-images.githubusercontent.com/93086649/163577427-3eb7730d-7491-4296-a5b9-d848b7e70215.png )
                  
                  
